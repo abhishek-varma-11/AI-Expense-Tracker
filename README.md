@@ -77,20 +77,23 @@ The project is being developed incrementally, starting with the frontend applica
 - [x] Mongoose installed and configured
 - [x] MongoDB connection module created
 - [x] MongoDB connection configuration added
-- [ ] Resolve current MongoDB Atlas network/authentication connection issue
+- [x] Successfully connected backend to MongoDB Atlas
 
 #### User Authentication
 
 - [x] User Mongoose schema
 - [x] User model
-- [x] Registration controller structure
-- [x] Registration route structure
-- [x] Password hashing implementation using bcrypt
-- [ ] Successfully test registration API
-- [ ] Login API
-- [ ] JWT generation
-- [ ] JWT verification middleware
-- [ ] Persistent authentication
+- [x] Registration controller
+- [x] Registration route
+- [x] Password hashing using bcrypt
+- [x] Successfully tested registration API
+- [x] Login controller
+- [x] Login route
+- [x] Password verification using bcrypt
+- [x] JWT generation
+- [x] JWT authentication middleware
+- [x] Protected `/api/auth/me` endpoint
+- [ ] Persistent authentication on frontend
 - [ ] User authorization
 
 #### Transactions
