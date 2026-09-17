@@ -1,11 +1,15 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+
 import useAuth from "../hooks/useAuth";
 
 function Login() {
-
     const navigate = useNavigate();
-    const { login } = useAuth();
+
+    const {
+        login,
+        isAuthenticated
+    } = useAuth();
 
     const [formData, setFormData] = useState({
         email: "",
@@ -13,19 +17,26 @@ function Login() {
     });
 
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function handleChange(event) {
-
         setFormData({
             ...formData,
             [event.target.name]: event.target.value
         });
 
+        /*
+         * Clear the server error when the user
+         * starts changing the form again.
+         */
+
+        if (serverError) {
+            setServerError("");
+        }
     }
 
     function validate() {
-
         const newErrors = {};
 
         if (formData.email.trim() === "") {
@@ -40,8 +51,9 @@ function Login() {
     }
 
     async function handleSubmit(event) {
-
         event.preventDefault();
+
+        setServerError("");
 
         const newErrors = validate();
 
@@ -54,40 +66,36 @@ function Login() {
         setIsSubmitting(true);
 
         try {
-
-            /*
-             * Temporary frontend authentication.
-             *
-             * This will be replaced with:
-             *
-             * authService.login(formData)
-             *
-             * when we connect the Express backend.
-             */
-
-            const user = {
-                name: "Abhishek",
-                email: formData.email
-            };
-
-            login(user);
+            await login({
+                email: formData.email,
+                password: formData.password
+            });
 
             navigate("/dashboard");
-
+        } catch (error) {
+            setServerError(error.message);
         } finally {
-
             setIsSubmitting(false);
-
         }
+    }
+
+    /*
+     * If the user is already authenticated,
+     * don't show the login form again.
+     */
+
+    if (isAuthenticated) {
+        navigate("/dashboard", {
+            replace: true
+        });
+
+        return null;
     }
 
     return (
         <main className="auth-page">
-
             <section className="auth-card">
-
                 <header className="auth-header">
-
                     <h1>AI Expense Tracker</h1>
 
                     <h2>Welcome Back</h2>
@@ -95,13 +103,16 @@ function Login() {
                     <p>
                         Login to manage your finances.
                     </p>
-
                 </header>
 
+                {serverError && (
+                    <div className="form-server-error">
+                        {serverError}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit}>
-
                     <div className="form-group">
-
                         <label htmlFor="email">
                             Email
                         </label>
@@ -121,11 +132,9 @@ function Login() {
                                 {errors.email}
                             </p>
                         )}
-
                     </div>
 
                     <div className="form-group">
-
                         <label htmlFor="password">
                             Password
                         </label>
@@ -145,7 +154,6 @@ function Login() {
                                 {errors.password}
                             </p>
                         )}
-
                     </div>
 
                     <button
@@ -156,7 +164,6 @@ function Login() {
                             ? "Logging in..."
                             : "Login"}
                     </button>
-
                 </form>
 
                 <p className="auth-footer">
@@ -165,13 +172,10 @@ function Login() {
                     <Link to="/register">
                         Create an account
                     </Link>
-
                 </p>
-
             </section>
-
         </main>
     );
 }
 
-export default Login;
+export default Login; 

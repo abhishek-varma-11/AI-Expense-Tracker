@@ -1,9 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-function Register() {
+import useAuth from "../hooks/useAuth";
 
+function Register() {
     const navigate = useNavigate();
+
+    const { register } = useAuth();
 
     const [formData, setFormData] = useState({
         name: "",
@@ -13,23 +16,24 @@ function Register() {
     });
 
     const [errors, setErrors] = useState({});
+    const [serverError, setServerError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     function handleChange(event) {
-
         setFormData({
             ...formData,
             [event.target.name]: event.target.value
         });
 
+        if (serverError) {
+            setServerError("");
+        }
     }
 
     function validate() {
-
         const newErrors = {};
 
-        const emailPattern =
-            /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         if (formData.name.trim() === "") {
             newErrors.name = "Name is required";
@@ -37,17 +41,21 @@ function Register() {
 
         if (formData.email.trim() === "") {
             newErrors.email = "Email is required";
-        }
-        else if (!emailPattern.test(formData.email)) {
+        } else if (!emailPattern.test(formData.email)) {
             newErrors.email = "Enter a valid email";
         }
 
-        if (formData.password.length < 6) {
+        if (formData.password === "") {
+            newErrors.password = "Password is required";
+        } else if (formData.password.length < 6) {
             newErrors.password =
                 "Password must be at least 6 characters";
         }
 
-        if (
+        if (formData.confirmPassword === "") {
+            newErrors.confirmPassword =
+                "Please confirm your password";
+        } else if (
             formData.confirmPassword !== formData.password
         ) {
             newErrors.confirmPassword =
@@ -58,8 +66,9 @@ function Register() {
     }
 
     async function handleSubmit(event) {
-
         event.preventDefault();
+
+        setServerError("");
 
         const newErrors = validate();
 
@@ -72,31 +81,33 @@ function Register() {
         setIsSubmitting(true);
 
         try {
+            await register({
+                name: formData.name,
+                email: formData.email,
+                password: formData.password
+            });
 
             /*
-             * Backend registration will eventually happen here.
+             * Registration succeeded.
              *
-             * register(formData)
+             * Our backend currently returns the created user
+             * but does not automatically log the user in.
+             *
+             * Therefore, send the user to the login page.
              */
 
-            console.log("Registration data:", formData);
-
             navigate("/");
-
+        } catch (error) {
+            setServerError(error.message);
         } finally {
-
             setIsSubmitting(false);
-
         }
     }
 
     return (
         <main className="auth-page">
-
             <section className="auth-card">
-
                 <header className="auth-header">
-
                     <h1>AI Expense Tracker</h1>
 
                     <h2>Create Account</h2>
@@ -104,13 +115,16 @@ function Register() {
                     <p>
                         Start managing your finances today.
                     </p>
-
                 </header>
 
+                {serverError && (
+                    <div className="form-server-error">
+                        {serverError}
+                    </div>
+                )}
+
                 <form onSubmit={handleSubmit}>
-
                     <div className="form-group">
-
                         <label htmlFor="name">
                             Name
                         </label>
@@ -130,11 +144,9 @@ function Register() {
                                 {errors.name}
                             </p>
                         )}
-
                     </div>
 
                     <div className="form-group">
-
                         <label htmlFor="email">
                             Email
                         </label>
@@ -154,11 +166,9 @@ function Register() {
                                 {errors.email}
                             </p>
                         )}
-
                     </div>
 
                     <div className="form-group">
-
                         <label htmlFor="password">
                             Password
                         </label>
@@ -178,11 +188,9 @@ function Register() {
                                 {errors.password}
                             </p>
                         )}
-
                     </div>
 
                     <div className="form-group">
-
                         <label htmlFor="confirmPassword">
                             Confirm Password
                         </label>
@@ -202,7 +210,6 @@ function Register() {
                                 {errors.confirmPassword}
                             </p>
                         )}
-
                     </div>
 
                     <button
@@ -213,21 +220,16 @@ function Register() {
                             ? "Creating Account..."
                             : "Create Account"}
                     </button>
-
                 </form>
 
                 <p className="auth-footer">
-
                     Already have an account?{" "}
 
                     <Link to="/">
                         Login
                     </Link>
-
                 </p>
-
             </section>
-
         </main>
     );
 }

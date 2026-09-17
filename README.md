@@ -1,6 +1,6 @@
 # AI Expense Tracker
 
-A full-stack personal finance management application built with the MERN stack. The application is designed to help users track income and expenses, understand their spending patterns, and receive AI-powered financial insights.
+A full-stack personal finance management application built with the MERN stack. The application helps users track income and expenses, understand spending patterns, and receive AI-powered financial insights.
 
 > 🚧 **Status: Under Development**
 
@@ -8,9 +8,11 @@ A full-stack personal finance management application built with the MERN stack. 
 
 ## Overview
 
-AI Expense Tracker is being developed as a full-stack financial management application where users can manage their income and expenses through a centralized dashboard.
+AI Expense Tracker is a full-stack financial management application where users can securely manage their income and expenses through a centralized dashboard.
 
-The planned application will provide:
+The application is being developed incrementally, with the frontend and backend being built as separate layers and gradually integrated.
+
+Planned capabilities include:
 
 - Income and expense management
 - Transaction search and filtering
@@ -21,27 +23,46 @@ The planned application will provide:
 - Budget recommendations
 - Natural-language financial queries
 
-The project is being developed incrementally, starting with the frontend application and backend architecture before integrating the two systems.
-
 ---
 
-## Current Progress
+# Current Progress
 
-### Frontend
+## Frontend
+
+### Project Setup
 
 - [x] React + Vite project setup
 - [x] React Router configuration
+- [x] Application routing structure
+- [x] Nested dashboard routing
+
+### Authentication
+
 - [x] Login page
 - [x] Registration page
 - [x] Form validation
+- [x] Authentication Context
+- [x] Custom authentication hook
 - [x] Protected route structure
+- [x] JWT integration with frontend
+- [x] Authentication persistence across page refresh
+- [x] Logout functionality
+
+### Dashboard
+
 - [x] Dashboard layout
 - [x] Reusable Sidebar component
 - [x] Reusable Header component
 - [x] Overview dashboard page
+- [x] Analytics page structure
+- [x] Profile page structure
+- [x] 404 / Not Found page
+
+### Transactions UI
+
 - [x] Transactions page
 - [x] Transaction details page
-- [x] Transaction form
+- [x] Reusable transaction form
 - [x] Add transaction functionality
 - [x] Edit transaction functionality
 - [x] Delete transaction functionality
@@ -50,18 +71,21 @@ The project is being developed incrementally, starting with the frontend applica
 - [x] Transaction type filtering
 - [x] Category filtering
 - [x] Responsive UI styling
-- [x] Authentication Context
+
+### State Management
+
 - [x] Transaction Context
-- [x] Custom authentication hook
 - [x] Custom transaction hook
-- [x] Nested dashboard routing
-- [x] Analytics page structure
-- [x] Profile page structure
-- [x] 404 / Not Found page
+- [x] Authentication Context
+- [x] Custom authentication hook
 
-### Backend
+> **Note:** Transaction functionality is currently implemented on the frontend using React state. It will be connected to the backend REST API during the transaction backend phase.
 
-#### Project Setup
+---
+
+# Backend
+
+## Project Setup
 
 - [x] Node.js backend project setup
 - [x] Express.js server setup
@@ -71,91 +95,64 @@ The project is being developed incrementally, starting with the frontend applica
 - [x] Environment variable configuration
 - [x] Backend health-check endpoint
 
-#### Database
+## Database
 
 - [x] MongoDB Atlas cluster setup
 - [x] Mongoose installed and configured
 - [x] MongoDB connection module created
-- [x] MongoDB connection configuration added
+- [x] MongoDB connection configuration
 - [x] Successfully connected backend to MongoDB Atlas
 
-#### User Authentication
+---
+
+# User Authentication
+
+## Registration
 
 - [x] User Mongoose schema
 - [x] User model
 - [x] Registration controller
 - [x] Registration route
+- [x] Input validation
 - [x] Password hashing using bcrypt
-- [x] Successfully tested registration API
+- [x] Duplicate email handling
+- [x] Registration API tested successfully
+
+## Login
+
 - [x] Login controller
 - [x] Login route
 - [x] Password verification using bcrypt
 - [x] JWT generation
+- [x] Login API tested successfully
+
+## Authentication & Authorization
+
 - [x] JWT authentication middleware
 - [x] Protected `/api/auth/me` endpoint
-- [ ] Persistent authentication on frontend
-- [ ] User authorization
-
-#### Transactions
-
-- [ ] Transaction Mongoose model
-- [ ] Transaction REST API
-- [ ] Create transaction endpoint
-- [ ] Get transactions endpoint
-- [ ] Get transaction by ID endpoint
-- [ ] Update transaction endpoint
-- [ ] Delete transaction endpoint
-- [ ] User ownership/authorization
+- [x] Current authenticated user retrieval
+- [x] JWT stored on frontend
+- [x] Authentication restored after page refresh
+- [x] Logout functionality
+- [ ] Transaction-level user authorization
+- [ ] Complete resource ownership enforcement
 
 ---
 
-## Analytics
+# Transactions
 
-- [ ] Dashboard financial summaries
-- [ ] Available balance calculation
-- [ ] Total income calculation
-- [ ] Total expenses calculation
-- [ ] Spending by category
-- [ ] Highest spending category
-- [ ] Average expense
-- [ ] Number of transactions
-- [ ] Income vs expenses
-- [ ] Monthly spending trends
-- [ ] Interactive charts
-- [ ] Date-range filtering
-- [ ] Weekly analytics
-- [ ] Monthly analytics
-- [ ] Last 3 months analytics
-- [ ] Yearly analytics
-- [ ] Custom date range
+The application uses a unified transaction model for both income and expenses.
 
----
-
-## AI Features
-
-The AI functionality will be implemented as a modular layer so that the core expense tracker remains functional even if AI services are unavailable.
-
-Planned AI capabilities:
-
-- [ ] AI expense categorization
-- [ ] AI spending analysis
-- [ ] Personalized budget recommendations
-- [ ] Monthly financial summaries
-- [ ] Natural-language financial queries
-- [ ] Spending pattern detection
-- [ ] Financial insights based on transaction history
-
----
-
-## Financial Model
-
-The application uses the following financial model:
+Planned transaction structure:
 
 ```text
-Opening Balance
-       +
-Total Income
-       -
-Total Expenses
-       =
-Available Balance
+Transaction
+├── user
+├── type
+├── title
+├── amount
+├── category
+├── date
+├── description
+├── createdAt
+└── updatedAt

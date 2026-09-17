@@ -208,6 +208,30 @@ button:active:not(:disabled) {
     text-decoration: underline;
 }
 
+.auth-loading {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: #f5f7fb;
+}
+
+.auth-loading p {
+    color: #6b7280;
+    font-size: 15px;
+}
+
+.form-server-error {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c;
+    font-size: 14px;
+}
+
 
 /* ========================================
    Authentication Responsive

@@ -1,18 +1,24 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+
+import useAuth from "../../hooks/useAuth";
 
 function Sidebar() {
+    const navigate = useNavigate();
+
+    const { logout } = useAuth();
+
+    function handleLogout() {
+        logout();
+        navigate("/", { replace: true });
+    }
 
     return (
         <aside className="sidebar">
-
-            {/* Application name */}
             <div className="sidebar-header">
                 <h1>AI Expense Tracker</h1>
             </div>
 
-            {/* Main navigation */}
             <nav className="sidebar-nav">
-
                 <NavLink to="/dashboard">
                     Overview
                 </NavLink>
@@ -28,18 +34,16 @@ function Sidebar() {
                 <NavLink to="/dashboard/profile">
                     Profile
                 </NavLink>
-
             </nav>
 
-            {/* Sidebar footer */}
             <div className="sidebar-footer">
-
-                <button type="button">
+                <button
+                    type="button"
+                    onClick={handleLogout}
+                >
                     Logout
                 </button>
-
             </div>
-
         </aside>
     );
 }
