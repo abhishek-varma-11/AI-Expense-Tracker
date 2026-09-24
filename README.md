@@ -74,12 +74,12 @@ Planned capabilities include:
 
 ### State Management
 
-- [x] Transaction Context
-- [x] Custom transaction hook
 - [x] Authentication Context
+- [x] Transaction Context
 - [x] Custom authentication hook
+- [x] Custom transaction hook
 
-> **Note:** Transaction functionality is currently implemented on the frontend using React state. It will be connected to the backend REST API during the transaction backend phase.
+> **Note:** Transaction functionality on the frontend currently uses React state. It will be replaced with persistent backend storage during the frontend-backend integration phase.
 
 ---
 
@@ -94,6 +94,8 @@ Planned capabilities include:
 - [x] Nodemon development setup
 - [x] Environment variable configuration
 - [x] Backend health-check endpoint
+
+---
 
 ## Database
 
@@ -134,8 +136,9 @@ Planned capabilities include:
 - [x] JWT stored on frontend
 - [x] Authentication restored after page refresh
 - [x] Logout functionality
-- [ ] Transaction-level user authorization
-- [ ] Complete resource ownership enforcement
+- [x] Protected frontend routes
+- [x] Authentication-based API requests
+- [x] Transaction-level user ownership checks
 
 ---
 
@@ -143,7 +146,9 @@ Planned capabilities include:
 
 The application uses a unified transaction model for both income and expenses.
 
-Planned transaction structure:
+## Transaction Model
+
+The transaction structure is:
 
 ```text
 Transaction
